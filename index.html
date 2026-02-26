@@ -12,7 +12,17 @@
         <h1>What is that National Park?</h1>
     </header>
     <main>
-        <article id="game" />
+        <article>
+            <section id="score-card"></section>
+            <section class="section-text_center">
+                <form id="user-form">
+                    <label for="guess">Guess A Letter:</label>
+                    <input type="text" id="guess" name="user_guess" maxlength="1">
+                    <button type="submit">Submit</button>
+                </form>
+            </section>
+            <section id="game"></section>
+        </article>
     </main>
     <footer>
         &copy; What is that National Park? <span id="year"></span>
