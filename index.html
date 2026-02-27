@@ -13,8 +13,16 @@
     </header>
     <main>
         <article>
-            <section id="score-card"></section>
             <section class="section-text_center">
+                <h2>Scoreboard</h2>
+                <span>Wins: <span id="wins"></span></span>
+                <span>Losses: <span id="losses"></span></span>
+                <hr />
+            </section>
+            <section class="section-text_center">
+                <section>Previous Park: <span id="previous-park"></span></section>
+                <section>Incorrect Guesses: <span id="incorrect-guesses"></span></section>
+                <section>Guesses Left: <span id="guesses-left"></span></section>
                 <form id="user-form">
                     <label for="guess">Guess A Letter:</label>
                     <input type="text" id="guess" name="user_guess" maxlength="1">
@@ -27,8 +35,7 @@
     <footer>
         &copy; What is that National Park? <span id="year"></span>
     </footer>
-    <script>
+    <script src="./index.js">
         document.getElementById('year').textContent = new Date().getFullYear()
     </script>
-    <script src="./index.js" />
 </body>
