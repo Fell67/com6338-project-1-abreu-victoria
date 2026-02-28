@@ -97,7 +97,6 @@ async function setupGame (start = 0) {
             park = parks[parkToSelect]
             parks.splice(parkToSelect, 1)
             parksData.data = parks
-            console.log('parks left: ' + parksData.data.length)
             localStorage.setItem(localStorageKeys.parksLoaded, JSON.stringify(parksData))
         } else {
             park = JSON.parse(localStorage.getItem(localStorageKeys.currentPark))
