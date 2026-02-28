@@ -150,7 +150,7 @@ function displayPark (park) {
     // If we are already in the middle of a game get the current status of the word else create one and save it
     let hiddenName = ''
     if (!getLocalStorage(localStorageKeys.hiddenName, false)) {
-        hiddenName = name.replaceAll(' ', '/').replace(/[a-zA-Z]/g, '_ ') + ' ' + (designation === '' ? 'Public Lands' : designation)
+        hiddenName = name.replaceAll(' ', ' / ').replace(/[a-zA-Z]/g, '_ ') + ' ' + (designation === '' ? 'Public Lands' : designation)
         setLocalStorage(localStorageKeys.hiddenName, hiddenName, false)
     } else {
         hiddenName = getLocalStorage(localStorageKeys.hiddenName, false)
@@ -280,7 +280,7 @@ function processUserGuess (letter) {
 
     // Get the hidden park value and the park we are currently guessing then format them to look the same
     let hiddenName = document.getElementById(hiddenNameElementId).textContent.toUpperCase().replaceAll('_ ', '_')
-    const parkName = getLocalStorage(localStorageKeys.currentPark)?.name.toUpperCase().replaceAll(' ', '/')
+    const parkName = getLocalStorage(localStorageKeys.currentPark)?.name.toUpperCase().replaceAll(' ', ' / ')
 
     // see if the user entered the correct letter
     const indexOfFirstRightLetter = parkName.indexOf(letter)
