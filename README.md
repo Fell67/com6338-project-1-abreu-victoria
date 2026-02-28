@@ -52,36 +52,40 @@ The purpose of this project is to bring awareness to the different parks and pub
 - [`async`/`await`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
     - In the following functions:
         - getParks (lines 31, and 34)
-        - setupGame (line 101)
+        - isValidImage (line 58)
+        - setupGame (lines 112 and 144)
+        - displayPark (line 203)
 - [Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
     - In the following functions:
         - getParks (line 31)
-        - changeImage (line 229)
+        - isValidImage (line 67)
+        - changeImage (line 252)
 - [Object or Array Destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring)
     - In the following functions:
-        - setupGame (line 109)
-        - displayPark (line 144)
+        - setupGame (line 130)
+        - displayPark (line 165)
 - [Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
-    - outside of the functions (line 335)
+    - outside of the functions (line 359)
     - In the following functions:
-        - displayPark (lines 171 and 199)
+        - displayPark (lines 192 and 222)
 - [`let` and `const`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const)
-    - outside of the functions (lines 1, 12-25, and 335)
+    - outside of the functions (lines 1, 12-25, and -)
     - In the following functions:
         - getParks (lines 29, 31, 36, and 43)
-        - setupGame (lines 76, 87, 90, 93, 109, 113, 115, and 126)
-        - displayPark (lines 139, 144, 147, 149, 151, 164, 167, 177, 181, 182, 195, and 208)
-        - displayScoreboard (lines 219-220)
-        - changeImage (lines 229, and 230)
-        - isLetter (line 265)
-        - processUserGuess (lines 275, 282, 283, 286, 290, 303, 307, 310, 316, and 319)
-        - Arrow functions (lines 339 and 341)
+        - isValidImage (lines 58 and 61)
+        - setupGame (lines 97, 108, 111, 114, 130, 134, 136, and 147)
+        - displayPark (lines 160, 165, 168, 170, 172, 185, 188, 198, 202, 204, 218, and 231)
+        - displayScoreboard (lines 242-243)
+        - changeImage (lines 252 and 156)
+        - isLetter (line 289)
+        - processUserGuess (lines 299, 306, 307, 310, 314, 327, 331, 334, 340, and 343)
+        - Arrow functions (lines 363 and 365)
 
 ### Where localStorage was implemented
 In the following functions:
-    - getLocalStorage
-    - setLocalStorage
-    - removeLocalStorage
+- getLocalStorage
+- setLocalStorage
+- removeLocalStorage
 
 ### Important URLs
 Github URL: https://github.com/Fell67/com6338-project-1-abreu-victoria

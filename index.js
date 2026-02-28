@@ -28,7 +28,7 @@ const maxIncorrectGuesses = 5
 async function getParks (start) {
     const apiKey = 'DzQ19snS6xQGbpY6Uqn6KGSveSvMJnXiXGXKia7w'
     try {
-        let response = await fetch(`https://developer.nps.gov/api/v1/parks?start=${start}&api_key=${apiKey}`)
+        const response = await fetch(`https://developer.nps.gov/api/v1/parks?start=${start}&api_key=${apiKey}`)
         // if the status code is 200 then we are good to continue else there is an issue
         if (response.status === 200) {
             return await response.json()
@@ -45,6 +45,27 @@ async function getParks (start) {
             statusText: error
         }
         return errorObj
+    }
+}
+
+// Check if the image src is valid
+async function isValidImage (src) {
+    if (!src) {
+        return false
+    }
+
+    try {
+        const response = await fetch(src)
+        // if the status code is 200 then we are good to continue else there is an issue
+        if (response.status === 200) {
+            const type = response.headers.get('Content-Type')
+            return (type && type.startsWith('image'))
+        } else {
+            return false
+        }
+    } catch (error) {
+        console.error(`Error checking image ${src}: ${error}`)
+        return false
     }
 }
 
@@ -120,7 +141,7 @@ async function setupGame (start = 0) {
             park = getLocalStorage(localStorageKeys.currentPark)
         }
         
-        displayPark(park)
+        await displayPark(park)
     } else {
         // Get the next set of parks if there are any left else the user has finished the game
         const nextStartingPoint = Number(startingPoint) + Number(numberOfParksLoaded) + 1
@@ -135,7 +156,7 @@ async function setupGame (start = 0) {
 }
 
 // Display the chosen park to the user
-function displayPark (park) {
+async function displayPark (park) {
     const gameElement = document.getElementById(gameElementId)
 
     // Remove anything that is already there
@@ -179,17 +200,19 @@ function displayPark (park) {
     imageGallerySectionElement.appendChild(imageSectionElement)
 
     for (const image of images) {
-        const imageElement = document.createElement('img')
-        imageElement.src = image.url
-        imageElement.alt = image.altText
-
-        if (images.indexOf(image) === 0) {
-            imageElement.className = shownImageClassName
-        } else {
-            imageElement.className = hiddenImageClassName
+        if (await isValidImage(image.url)) {
+            const imageElement = document.createElement('img')
+            imageElement.src = image.url
+            imageElement.alt = image.altText
+    
+            if (images.indexOf(image) === 0) {
+                imageElement.className = shownImageClassName
+            } else {
+                imageElement.className = hiddenImageClassName
+            }
+    
+            imageSectionElement.appendChild(imageElement)
         }
-
-        imageSectionElement.appendChild(imageElement)
     }
 
     const imageNextButtonElement = document.createElement('button')
@@ -227,6 +250,9 @@ function displayScoreboard () {
 function changeImage (direction) {
     // get current image that is displayed and a list of all the images for the park
     const currentImageDisplayedElement = document.querySelector(`.${shownImageClassName}`)
+    if (!currentImageDisplayedElement) {
+        return
+    }
     let nextImageElement
     if (direction === 'next') {
         // get the next image
@@ -244,8 +270,6 @@ function changeImage (direction) {
         if (nextImageElement === null) {
             nextImageElement = currentImageDisplayedElement.parentElement.lastChild
         }
-        
-
     }
 
     // Update the displayed image
