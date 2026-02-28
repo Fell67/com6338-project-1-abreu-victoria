@@ -96,6 +96,8 @@ async function setupGame (start = 0) {
             const parkToSelect = Math.floor(Math.random() * parks.length)
             park = parks[parkToSelect]
             parks.splice(parkToSelect, 1)
+            parksData.data = parks
+            console.log('parks left: ' + parksData.data.length)
             localStorage.setItem(localStorageKeys.parksLoaded, JSON.stringify(parksData))
         } else {
             park = JSON.parse(localStorage.getItem(localStorageKeys.currentPark))
@@ -188,7 +190,7 @@ function displayPark (park) {
     // Display the weatherInfo
     const weatherInfoElement = document.createElement('section')
     // Remove the name of the place where it exists and replace it with "PARK NAME"
-    weatherInfoElement.textContent = weatherInfo.replaceAll(fullName, 'PARK NAME').replaceAll(name, 'PARK NAME')
+    weatherInfoElement.textContent = weatherInfo.replaceAll(name, 'PARK NAME')
     gameElement.appendChild(weatherInfoElement)
     
     // add the chosen park to the local storage
@@ -318,8 +320,10 @@ userGuessElement.addEventListener('submit', (e) => {
     e.preventDefault()
     e.stopPropagation()
 
+    let inputElement = userGuessElement.querySelector('input')
     // Process what the user entered and clear the field
-    const input = userGuessElement.querySelector('input').value.trim()
+    const input = inputElement.value.trim()
     processUserGuess(input)
-    userGuessElement.querySelector('input').value = ''
+    inputElement.value = ''
+    inputElement.focus()
 })
