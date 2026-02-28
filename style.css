@@ -29,6 +29,8 @@ header {
 main {
   padding: 1em;
   justify-items: center;
+  max-width: 1140px;
+  align-self: center;
 }
 
 footer {
