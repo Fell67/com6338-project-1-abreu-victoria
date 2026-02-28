@@ -50,13 +50,38 @@ The purpose of this project is to bring awareness to the different parks and pub
 
 ### Where ES6 features were implemented
 - [`async`/`await`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+    - In the following functions:
+        - getParks (lines 31, and 34)
+        - setupGame (line 101)
 - [Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
+    - In the following functions:
+        - getParks (line 31)
+        - changeImage (line 229)
 - [Object or Array Destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring)
+    - In the following functions:
+        - setupGame (line 109)
+        - displayPark (line 144)
 - [Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+    - outside of the functions (line 335)
+    - In the following functions:
+        - displayPark (lines 171 and 199)
 - [`let` and `const`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const)
+    - outside of the functions (lines 1, 12-25, and 335)
+    - In the following functions:
+        - getParks (lines 29, 31, 36, and 43)
+        - setupGame (lines 76, 87, 90, 93, 109, 113, 115, and 126)
+        - displayPark (lines 139, 144, 147, 149, 151, 164, 167, 177, 181, 182, 195, and 208)
+        - displayScoreboard (lines 219-220)
+        - changeImage (lines 229, and 230)
+        - isLetter (line 265)
+        - processUserGuess (lines 275, 282, 283, 286, 290, 303, 307, 310, 316, and 319)
+        - Arrow functions (lines 339 and 341)
 
 ### Where localStorage was implemented
-- line 
+In the following functions:
+    - getLocalStorage
+    - setLocalStorage
+    - removeLocalStorage
 
 ### Important URLs
 Github URL: https://github.com/Fell67/com6338-project-1-abreu-victoria

@@ -280,7 +280,7 @@ function processUserGuess (letter) {
 
     // Get the hidden park value and the park we are currently guessing then format them to look the same
     let hiddenName = document.getElementById(hiddenNameElementId).textContent.toUpperCase().replaceAll('_ ', '_')
-    let parkName = getLocalStorage(localStorageKeys.currentPark)?.name.toUpperCase().replaceAll(' ', '/')
+    const parkName = getLocalStorage(localStorageKeys.currentPark)?.name.toUpperCase().replaceAll(' ', '/')
 
     // see if the user entered the correct letter
     const indexOfFirstRightLetter = parkName.indexOf(letter)
@@ -300,7 +300,7 @@ function processUserGuess (letter) {
     } else {
         // If the letter doesn't exist then add the letter to the incorrectGuesses, and decrement the number of guesses remaining
         incorrectGuesses.push(letter)
-        let guessesLeft = Number(getLocalStorage(localStorageKeys.guessesLeft)) - 1
+        const guessesLeft = Number(getLocalStorage(localStorageKeys.guessesLeft)) - 1
         setLocalStorage(localStorageKeys.incorrectGuesses, incorrectGuesses)
         setLocalStorage(localStorageKeys.guessesLeft, guessesLeft)
 
@@ -313,10 +313,10 @@ function processUserGuess (letter) {
 
     // if the user is out of guesses or if the park was figured out then restart the game
     if (Number(getLocalStorage(localStorageKeys.guessesLeft)) <= 0) {
-        let losses = Number(getLocalStorage(localStorageKeys.losses)) + 1
+        const losses = Number(getLocalStorage(localStorageKeys.losses)) + 1
         setLocalStorage(localStorageKeys.losses, losses)
     } else if (!hiddenName.includes('_')) {
-        let wins = Number(getLocalStorage(localStorageKeys.wins)) + 1
+        const wins = Number(getLocalStorage(localStorageKeys.wins)) + 1
         setLocalStorage(localStorageKeys.wins, wins)
     }
     
@@ -336,7 +336,7 @@ userGuessElement.addEventListener('submit', (e) => {
     e.preventDefault()
     e.stopPropagation()
 
-    let inputElement = userGuessElement.querySelector('input')
+    const inputElement = userGuessElement.querySelector('input')
     // Process what the user entered and clear the field
     const input = inputElement.value.trim()
     processUserGuess(input)
