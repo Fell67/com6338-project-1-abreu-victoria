@@ -81,8 +81,10 @@ img {
 }
 
 .section-image_gallery-image_container {
-  max-width: 50vw;
-  max-height: 50vh;
+  min-width: 50vw;
+  min-height: 50vh;
+  max-width: 100%;
+  max-height: 100%;
   align-items: center;
   justify-items: center;
   background-color: var(--accent-color);

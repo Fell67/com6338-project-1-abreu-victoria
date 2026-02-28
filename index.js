@@ -48,43 +48,62 @@ async function getParks (start) {
     }
 }
 
+// Get an item from localStorage
+function getLocalStorage (key, parseObject = true) {
+    if (parseObject) {
+        return JSON.parse(localStorage.getItem(key))
+    }
+
+    return localStorage.getItem(key)
+}
+
+// Set an item from localStorage
+function setLocalStorage (key, value, stringifyObject = true) {
+    if (stringifyObject) {
+        localStorage.setItem(key, JSON.stringify(value))
+    } else {
+        localStorage.setItem(key, value)
+    }
+}
+
+// Remove an item from localStorage
+function removeLocalStorage (key) {
+    localStorage.removeItem(key) 
+}
+
 // Setup the game
 async function setupGame (start = 0) {
-    let parksData = JSON.parse(localStorage.getItem(localStorageKeys.parksLoaded))
+    let parksData = getLocalStorage(localStorageKeys.parksLoaded)
 
     // If the game is being restarted then reset the game else get the information for the current game
     if (!parksData) {
-        localStorage.setItem(localStorageKeys.wins, 0)
-        localStorage.setItem(localStorageKeys.losses, 0)
-        localStorage.setItem(localStorageKeys.guessesLeft, maxIncorrectGuesses)
-        localStorage.removeItem(localStorageKeys.incorrectGuesses)
+        setLocalStorage(localStorageKeys.wins, 0)
+        setLocalStorage(localStorageKeys.losses, 0)
+        setLocalStorage(localStorageKeys.guessesLeft, maxIncorrectGuesses)
+        removeLocalStorage(localStorageKeys.incorrectGuesses)
     }
 
     // Set the previous park, incorrect guessed, and guesses left
     const incorrectGuessesElement = document.getElementById(incorrectGuessesElementId)
-    incorrectGuessesElement.textContent = (localStorage.getItem(localStorageKeys.incorrectGuesses) ? JSON.parse(localStorage.getItem(localStorageKeys.incorrectGuesses)) : 'None')
+    incorrectGuessesElement.textContent = (getLocalStorage(localStorageKeys.incorrectGuesses) ? getLocalStorage(localStorageKeys.incorrectGuesses) : 'None')
 
     const guessesLeftElement = document.getElementById(guessesLeftElementId)
-    guessesLeftElement.textContent = (localStorage.getItem(localStorageKeys.guessesLeft) ? localStorage.getItem(localStorageKeys.guessesLeft) : maxIncorrectGuesses)
+    guessesLeftElement.textContent = (getLocalStorage(localStorageKeys.guessesLeft) ? getLocalStorage(localStorageKeys.guessesLeft) : maxIncorrectGuesses)
 
     const previousParkElement = document.getElementById(previousParkElementId)
-    previousParkElement.textContent = (localStorage.getItem(localStorageKeys.previousPark) ? JSON.parse(localStorage.getItem(localStorageKeys.previousPark)).name : 'None')
+    previousParkElement.textContent = (getLocalStorage(localStorageKeys.previousPark) ? getLocalStorage(localStorageKeys.previousPark).name : 'None')
 
     // Display the score card to the user
     displayScoreboard()
 
     // If we are not in the middle of a game then get the parks
-    if (!parksData || Number(parksData.start) !== start) {
+    if (!parksData || Number(parksData.start) !== Number(start)) {
         parksData = await getParks(start)
 
         if (parksData.errorCode) {
             console.error('Unable to get the park information. error ' + parksData.errorCode + ': ' + parksData.statusText)
             return
-        } else {
-            localStorage.setItem(localStorageKeys.parksLoaded, JSON.stringify(parksData))
         }
-    } else {
-        parksData = JSON.parse(localStorage.getItem(localStorageKeys.parksLoaded))
     }
 
     const { data:parks, limit:numberOfParksLoaded, start:startingPoint, total} = parksData
@@ -92,14 +111,13 @@ async function setupGame (start = 0) {
     // Pick a park at random and remove it from the array if we are not already guessing at a park
     if (parks.length !== 0) {
         let park
-        if (!localStorage.getItem(localStorageKeys.currentPark)) {
+        if (!getLocalStorage(localStorageKeys.currentPark)) {
             const parkToSelect = Math.floor(Math.random() * parks.length)
             park = parks[parkToSelect]
-            parks.splice(parkToSelect, 1)
-            parksData.data = parks
-            localStorage.setItem(localStorageKeys.parksLoaded, JSON.stringify(parksData))
+            parksData.data = parks.toSpliced(parkToSelect, 1)
+            setLocalStorage(localStorageKeys.parksLoaded, parksData)
         } else {
-            park = JSON.parse(localStorage.getItem(localStorageKeys.currentPark))
+            park = getLocalStorage(localStorageKeys.currentPark)
         }
         
         displayPark(park)
@@ -110,7 +128,7 @@ async function setupGame (start = 0) {
             setupGame(nextStartingPoint)
 
         } else {
-            localStorage.removeItem(localStorageKeys.parksData)
+            removeLocalStorage(localStorageKeys.parksData)
             setupGame()
         }
     }
@@ -123,7 +141,7 @@ function displayPark (park) {
     // Remove anything that is already there
     gameElement.replaceChildren()
 
-    const { images, fullName, designation, weatherInfo, name } = park 
+    const { images, designation, weatherInfo, name } = park 
 
     // Display the designation and the name as dashes
     const hiddenNameSectionElement = document.createElement('section')
@@ -131,11 +149,11 @@ function displayPark (park) {
     const hiddenNameElement = document.createElement('h2')
     // If we are already in the middle of a game get the current status of the word else create one and save it
     let hiddenName = ''
-    if (!localStorage.getItem(localStorageKeys.hiddenName)) {
+    if (!getLocalStorage(localStorageKeys.hiddenName, false)) {
         hiddenName = name.replaceAll(' ', '/').replace(/[a-zA-Z]/g, '_ ') + ' ' + (designation === '' ? 'Public Lands' : designation)
-        localStorage.setItem(localStorageKeys.hiddenName, hiddenName)
+        setLocalStorage(localStorageKeys.hiddenName, hiddenName, false)
     } else {
-        hiddenName = localStorage.getItem(localStorageKeys.hiddenName)
+        hiddenName = getLocalStorage(localStorageKeys.hiddenName, false)
     }
     hiddenNameElement.textContent = hiddenName
     hiddenNameElement.id = hiddenNameElementId
@@ -193,7 +211,7 @@ function displayPark (park) {
     gameElement.appendChild(weatherInfoElement)
     
     // add the chosen park to the local storage
-    localStorage.setItem(localStorageKeys.currentPark, JSON.stringify(park))
+    setLocalStorage(localStorageKeys.currentPark, park)
 }
 
 // Display Scoreboard
@@ -201,8 +219,8 @@ function displayScoreboard () {
     const winsElement = document.getElementById(winsElementId)
     const lossesElement = document.getElementById(lossesElementId)
 
-    winsElement.textContent = (localStorage.getItem(localStorageKeys.wins) ? localStorage.getItem(localStorageKeys.wins) : '0')
-    lossesElement.textContent = (localStorage.getItem(localStorageKeys.losses) ? localStorage.getItem(localStorageKeys.losses) : '0')
+    winsElement.textContent = (getLocalStorage(localStorageKeys.wins) ? getLocalStorage(localStorageKeys.wins) : '0')
+    lossesElement.textContent = (getLocalStorage(localStorageKeys.losses) ? getLocalStorage(localStorageKeys.losses) : '0')
 }
 
 // Update the image in the gallery
@@ -254,15 +272,15 @@ function processUserGuess (letter) {
     letter = letter.toUpperCase()
 
     // Check that the letter is a letter, has not already been guessed, and that there is a park loaded
-    const incorrectGuesses = (localStorage.getItem(localStorageKeys.incorrectGuesses) ? JSON.parse(localStorage.getItem(localStorageKeys.incorrectGuesses)) : [])
+    const incorrectGuesses = (getLocalStorage(localStorageKeys.incorrectGuesses) ? getLocalStorage(localStorageKeys.incorrectGuesses) : [])
 
-    if (!isLetter(letter) || incorrectGuesses.includes(letter) || !localStorage.getItem(localStorageKeys.parksLoaded)) {
+    if (!isLetter(letter) || incorrectGuesses.includes(letter) || !getLocalStorage(localStorageKeys.parksLoaded)) {
         return
     }
 
     // Get the hidden park value and the park we are currently guessing then format them to look the same
     let hiddenName = document.getElementById(hiddenNameElementId).textContent.toUpperCase().replaceAll('_ ', '_')
-    let parkName = JSON.parse(localStorage.getItem(localStorageKeys.currentPark))?.name.toUpperCase().replaceAll(' ', '/')
+    let parkName = getLocalStorage(localStorageKeys.currentPark)?.name.toUpperCase().replaceAll(' ', '/')
 
     // see if the user entered the correct letter
     const indexOfFirstRightLetter = parkName.indexOf(letter)
@@ -278,13 +296,13 @@ function processUserGuess (letter) {
 
         // Display the new hidden name to the user and save off the progress
         document.getElementById(hiddenNameElementId).textContent = hiddenName.replaceAll('_', '_ ')
-        localStorage.setItem(localStorageKeys.hiddenName, hiddenName.replaceAll('_', '_ '))
+        setLocalStorage(localStorageKeys.hiddenName, hiddenName.replaceAll('_', '_ '), false)
     } else {
         // If the letter doesn't exist then add the letter to the incorrectGuesses, and decrement the number of guesses remaining
         incorrectGuesses.push(letter)
-        let guessesLeft = Number(localStorage.getItem(localStorageKeys.guessesLeft)) - 1
-        localStorage.setItem(localStorageKeys.incorrectGuesses, JSON.stringify(incorrectGuesses))
-        localStorage.setItem(localStorageKeys.guessesLeft, guessesLeft)
+        let guessesLeft = Number(getLocalStorage(localStorageKeys.guessesLeft)) - 1
+        setLocalStorage(localStorageKeys.incorrectGuesses, incorrectGuesses)
+        setLocalStorage(localStorageKeys.guessesLeft, guessesLeft)
 
         const incorrectGuessesElement = document.getElementById(incorrectGuessesElementId)
         incorrectGuessesElement.textContent = incorrectGuesses
@@ -294,25 +312,24 @@ function processUserGuess (letter) {
     }
 
     // if the user is out of guesses or if the park was figured out then restart the game
-    if (Number(localStorage.getItem(localStorageKeys.guessesLeft)) <= 0) {
-        let losses = Number(localStorage.getItem(localStorageKeys.losses)) + 1
-        localStorage.setItem(localStorageKeys.losses, losses)
+    if (Number(getLocalStorage(localStorageKeys.guessesLeft)) <= 0) {
+        let losses = Number(getLocalStorage(localStorageKeys.losses)) + 1
+        setLocalStorage(localStorageKeys.losses, losses)
     } else if (!hiddenName.includes('_')) {
-        let wins = Number(localStorage.getItem(localStorageKeys.wins)) + 1
-        localStorage.setItem(localStorageKeys.wins, wins)
+        let wins = Number(getLocalStorage(localStorageKeys.wins)) + 1
+        setLocalStorage(localStorageKeys.wins, wins)
     }
     
-    if (Number(localStorage.getItem(localStorageKeys.guessesLeft)) <= 0 || !hiddenName.includes('_')) {
-        localStorage.setItem(localStorageKeys.previousPark, localStorage.getItem(localStorageKeys.currentPark))
-        localStorage.setItem(localStorageKeys.guessesLeft, maxIncorrectGuesses)
-        localStorage.removeItem(localStorageKeys.currentPark)
-        localStorage.removeItem(localStorageKeys.hiddenName)
-        localStorage.removeItem(localStorageKeys.incorrectGuesses)
-    
-        setupGame(JSON.parse(localStorage.getItem(localStorageKeys.parksLoaded)).start)
+    if (Number(getLocalStorage(localStorageKeys.guessesLeft)) <= 0 || !hiddenName.includes('_')) {
+        setLocalStorage(localStorageKeys.previousPark, getLocalStorage(localStorageKeys.currentPark))
+        setLocalStorage(localStorageKeys.guessesLeft, maxIncorrectGuesses)
+        removeLocalStorage(localStorageKeys.currentPark)
+        removeLocalStorage(localStorageKeys.hiddenName)
+        removeLocalStorage(localStorageKeys.incorrectGuesses)
+
+        setupGame(getLocalStorage(localStorageKeys.parksLoaded).start)
     }
 }
-
 
 setupGame()
 userGuessElement.addEventListener('submit', (e) => {
