@@ -1,8 +1,9 @@
 # Project 1 - Create a Web Application Using ES6 and New JavaScript Features
-## Background
+## Assignment Directions
+### Background
 In this solo project, you will create a web application using modern JavaScript that responds to user input with dynamic data from an external web API.
 
-## Requirements
+### Requirements
 To receive full credit for this assignment, the finished application MUST:
 
 - Incorporate the following ES6 features:
@@ -26,7 +27,7 @@ In addition, the application **MUST NOT**:
 - Contain any lorem text.
 - Use Bootstrap, jQuery, or any other 3rd party JavaScript libraries.
 
-## Example Project Themes
+### Example Project Themes
 
 Project ideas that would meet the above requirements:
 
@@ -39,6 +40,24 @@ Project ideas that would **NOT** meet the above requirements:
 1. **Random Dog/Cat Image**: A website with a button to fetch a random animal image.
 1. **Random Quote**: Click a button to fetch a random quote, or load a quote at random when the page loads.
 
-## Submission
+### Submission
 
 Please include **BOTH** the repository link as well as the live site link in your submission.
+
+## Information About The Project
+### Project Purpose
+The purpose of this project is to bring awareness to the different parks and public lands that the National Park Service protects and maintains. Using the [National Park Service API](https://www.nps.gov/subjects/developer/index.htm) this web application creates a fun game where users guess what national park is being displayed.
+
+### Where ES6 features were implemented
+- [`async`/`await`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+- [Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
+- [Object or Array Destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring)
+- [Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+- [`let` and `const`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const)
+
+### Where localStorage was implemented
+- line 
+
+### Important URLs
+Github URL: https://github.com/Fell67/com6338-project-1-abreu-victoria
+Website URL: https://fell67.github.io/com6338-project-1-abreu-victoria/

@@ -12,6 +12,8 @@ const localStorageKeys = {
 const gameElementId = 'game'
 const userFormId = 'user-form'
 const hiddenNameElementId = 'hidden-name'
+const shownImageClassName = 'section-image_gallery-image_displayed'
+const hiddenImageClassName = 'section-image_gallery-image_hidden'
 const winsElementId = 'wins'
 const lossesElementId = 'losses'
 const previousParkElementId = 'previous-park'
@@ -108,6 +110,7 @@ async function setupGame (start = 0) {
 
         } else {
             localStorage.removeItem(localStorageKeys.parksData)
+            setupGame()
         }
     }
 }
@@ -138,17 +141,49 @@ function displayPark (park) {
     hiddenNameSectionElement.appendChild(hiddenNameElement)
     gameElement.appendChild(hiddenNameSectionElement)
 
-    // Display the image
-    const imageElement = document.createElement('img')
+    // Display the image section
+    const imageGallerySectionElement = document.createElement('section')
+    imageGallerySectionElement.className = 'section-text_center section-image_gallery'
+
+    const imagePrevButtonElement = document.createElement('button')
+    imagePrevButtonElement.textContent = '<'
+    imagePrevButtonElement.ariaLabel = 'previous'
+    imagePrevButtonElement.classList = 'section-image_gallery-button'
+    imagePrevButtonElement.addEventListener('click', (e) => {
+        e.stopPropagation()
+        changeImage('previous')
+    })
+    imageGallerySectionElement.appendChild(imagePrevButtonElement)
+
     const imageSectionElement = document.createElement('section')
-    
-    // Select a random image from the list
-    const randomImage = images[Math.floor(Math.random() * images.length)]
-    imageElement.src = randomImage.url
-    imageElement.alt = randomImage.altText
-    imageSectionElement.className = 'section-text_center'
-    imageSectionElement.appendChild(imageElement)
-    gameElement.appendChild(imageSectionElement)
+    imageSectionElement.className = 'section-image_gallery-image_container'
+    imageGallerySectionElement.appendChild(imageSectionElement)
+
+    for (const image of images) {
+        const imageElement = document.createElement('img')
+        imageElement.src = image.url
+        imageElement.alt = image.altText
+
+        if (images.indexOf(image) === 0) {
+            imageElement.className = shownImageClassName
+        } else {
+            imageElement.className = hiddenImageClassName
+        }
+
+        imageSectionElement.appendChild(imageElement)
+    }
+
+    const imageNextButtonElement = document.createElement('button')
+    imageNextButtonElement.textContent = '>'
+    imageNextButtonElement.ariaLabel = 'next'
+    imageNextButtonElement.classList = 'section-image_gallery-button'
+    imageNextButtonElement.addEventListener('click', (e) => {
+        e.stopPropagation()
+        changeImage('next')
+    })
+    imageGallerySectionElement.appendChild(imageNextButtonElement)
+
+    gameElement.appendChild(imageGallerySectionElement)
 
     // Display the weatherInfo
     const weatherInfoElement = document.createElement('section')
@@ -169,6 +204,38 @@ function displayScoreboard () {
     lossesElement.textContent = (localStorage.getItem(localStorageKeys.losses) ? localStorage.getItem(localStorageKeys.losses) : '0')
 }
 
+// Update the image in the gallery
+function changeImage (direction) {
+    // get current image that is displayed and a list of all the images for the park
+    const currentImageDisplayedElement = document.querySelector(`.${shownImageClassName}`)
+    let nextImageElement
+    if (direction === 'next') {
+        // get the next image
+        nextImageElement = currentImageDisplayedElement.nextElementSibling
+
+        // If that was the last image loop back to the first image
+        if (nextImageElement === null) {
+            nextImageElement = currentImageDisplayedElement.parentElement.firstChild
+        }
+    } else if (direction === 'previous') {
+        // get the previous image
+        nextImageElement = currentImageDisplayedElement.previousElementSibling
+
+        // If that was the first image loop to the last image
+        if (nextImageElement === null) {
+            nextImageElement = currentImageDisplayedElement.parentElement.lastChild
+        }
+        
+
+    }
+
+    // Update the displayed image
+    currentImageDisplayedElement.classList.remove(shownImageClassName)
+    currentImageDisplayedElement.classList.add(hiddenImageClassName)
+    nextImageElement.classList.remove(hiddenImageClassName)
+    nextImageElement.classList.add(shownImageClassName)
+}
+
 // Check if the character is a letter using regex
 function isLetter (letter) {
   // if there was more then one letter passes in or no letter then return false
@@ -185,10 +252,10 @@ function isLetter (letter) {
 function processUserGuess (letter) {
     letter = letter.toUpperCase()
 
-    // Check that the letter is the letter and has not already been guessed
+    // Check that the letter is a letter, has not already been guessed, and that there is a park loaded
     const incorrectGuesses = (localStorage.getItem(localStorageKeys.incorrectGuesses) ? JSON.parse(localStorage.getItem(localStorageKeys.incorrectGuesses)) : [])
 
-    if (!isLetter(letter) || incorrectGuesses.includes(letter)) {
+    if (!isLetter(letter) || incorrectGuesses.includes(letter) || !localStorage.getItem(localStorageKeys.parksLoaded)) {
         return
     }
 
