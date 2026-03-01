@@ -168,10 +168,10 @@ async function displayPark (park) {
     const hiddenNameSectionElement = document.createElement('section')
     hiddenNameSectionElement.className = 'section-text_center'
     const hiddenNameElement = document.createElement('h2')
-    // If we are already in the middle of a game get the current status of the word else create one and save it
+    // If we are already in the middle of a game get the current status of the word else create one and save it. NOTE: If there are any parks with letters that have accents then those will be shown by default.
     let hiddenName = ''
     if (!getLocalStorage(localStorageKeys.hiddenName, false)) {
-        hiddenName = name.replaceAll(' ', ' / ').replace(/[a-zA-Z]/g, '_ ') + ' ' + (designation === '' ? 'Public Lands' : designation)
+        hiddenName = name.replaceAll(' ', ' / ').replace(/[a-zA-Z]/g, '_ ').toUpperCase() + ' ' + (designation === '' ? 'Public Lands' : designation)
         setLocalStorage(localStorageKeys.hiddenName, hiddenName, false)
     } else {
         hiddenName = getLocalStorage(localStorageKeys.hiddenName, false)
@@ -183,7 +183,7 @@ async function displayPark (park) {
 
     // Display the image section
     const imageGallerySectionElement = document.createElement('section')
-    imageGallerySectionElement.className = 'section-text_center section-image_gallery'
+    imageGallerySectionElement.className = 'section-image_gallery'
 
     const imagePrevButtonElement = document.createElement('button')
     imagePrevButtonElement.textContent = '<'
@@ -229,6 +229,7 @@ async function displayPark (park) {
 
     // Display the weatherInfo
     const weatherInfoElement = document.createElement('section')
+    weatherInfoElement.className = 'section-anywhere_overflow_wrap'
     // Remove the name of the place where it exists and replace it with "PARK NAME"
     weatherInfoElement.textContent = weatherInfo.replaceAll(name, 'PARK NAME')
     gameElement.appendChild(weatherInfoElement)

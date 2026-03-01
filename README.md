@@ -59,27 +59,27 @@ The purpose of this project is to bring awareness to the different parks and pub
     - In the following functions:
         - getParks (line 31)
         - isValidImage (line 67)
-        - changeImage (line 252)
+        - changeImage (line 253)
 - [Object or Array Destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring)
     - In the following functions:
         - setupGame (line 130)
-        - displayPark (line 165)
+        - displayPark (line 166)
 - [Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
-    - outside of the functions (line 359)
+    - outside of the functions (line 360)
     - In the following functions:
         - displayPark (lines 192 and 222)
 - [`let` and `const`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const)
-    - outside of the functions (lines 1, 12-25, and -)
+    - outside of the functions (lines 1, and 12-25)
     - In the following functions:
         - getParks (lines 29, 31, 36, and 43)
         - isValidImage (lines 58 and 61)
         - setupGame (lines 97, 108, 111, 114, 130, 134, 136, and 147)
         - displayPark (lines 160, 165, 168, 170, 172, 185, 188, 198, 202, 204, 218, and 231)
-        - displayScoreboard (lines 242-243)
-        - changeImage (lines 252 and 156)
-        - isLetter (line 289)
-        - processUserGuess (lines 299, 306, 307, 310, 314, 327, 331, 334, 340, and 343)
-        - Arrow functions (lines 363 and 365)
+        - displayScoreboard (lines 243-244)
+        - changeImage (lines 253 and 157)
+        - isLetter (line 290)
+        - processUserGuess (lines 300, 307, 308, 311, 315, 328, 332, 335, 341, and 344)
+        - Arrow functions (lines 364 and 366)
 
 ### Where localStorage was implemented
 In the following functions:
@@ -88,5 +88,5 @@ In the following functions:
 - removeLocalStorage
 
 ### Important URLs
-Github URL: https://github.com/Fell67/com6338-project-1-abreu-victoria
-Website URL: https://fell67.github.io/com6338-project-1-abreu-victoria/
+- Github URL: https://github.com/Fell67/com6338-project-1-abreu-victoria
+- Website URL: https://fell67.github.io/com6338-project-1-abreu-victoria/

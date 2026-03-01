@@ -67,10 +67,15 @@ img {
   text-align: center;
 }
 
+.section-anywhere_overflow_wrap {
+  overflow-wrap: anywhere;
+}
+
 .section-image_gallery {
   justify-content: center;
   display: flex;
   gap: 0px;
+  height: 50vh;
 }
 
 .section-image_gallery-button {
@@ -83,13 +88,10 @@ img {
 }
 
 .section-image_gallery-image_container {
-  min-width: 50vw;
-  min-height: 50vh;
-  max-width: 100%;
-  max-height: 100%;
   align-items: center;
   justify-items: center;
   background-color: var(--accent-color);
+  width: 50vw;
 }
 
 .section-image_gallery-image_displayed {
